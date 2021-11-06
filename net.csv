@@ -1,0 +1,5 @@
+x,y,color
+10,10,red
+-10,10,black
+10,-10,blue
+-10,-10,white
