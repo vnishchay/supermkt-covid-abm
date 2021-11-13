@@ -1,115 +1,52 @@
-globals [fileList]
+globals [%infected]
 
-patches-own [ grass-amount ]
-
-to set-shelves
-
-  ca
-  file-open "example_data/shelves.csv"
-  setup-patches
-    ask patches[
-    if pxcor = 32 and pycor = -25 [set pcolor yellow ]
-
-    if  (pxcor >= -14 and pxcor <= 33 ) and pycor = -26 [set pcolor grey ]
-    if  (pxcor >= 14 and pxcor <= 33 ) and pycor = -5 [set pcolor grey ]
-    if  (pxcor >= -13 and pxcor <= 13 ) and pycor = -14 [set pcolor grey ]
-
-
-    if  (pycor >= -26 and pycor <= -14) and pxcor = -14 [set pcolor grey ]
-    if  (pycor >= -26 and pycor <= -6) and pxcor = 33 [set pcolor grey ]
-    if  (pycor >= -14 and pycor <= -6) and pxcor = 14 [set pcolor grey ]
-
-  ]
-  while [not file-at-end?][
-    shelf
-  ]
-
-  file-close-all
+to setup
+  clear-all
   reset-ticks
-end
-
-to shelf
-  let csv file-read-line
-  set csv word csv ","
-  let mylist []
-  while [not empty? csv]
+  crt population
   [
-    let $sep position "," csv
-    let $item substring csv 0 $sep
-    carefully [set $item read-from-string $item][]
-    set mylist lput $item mylist
-    set csv substring csv ($sep + 1) length csv
+     setxy random-xcor random-ycor
+     set shape "person"
+     set color green
   ]
-
-  show mylist
-  let x item 0 mylist * 1.75
-  let y item 1 mylist * 1.75
-    ask patch x ( y - 20 ) [
-
-  let ent item 6 mylist
-    (ifelse
-    ent = "Entrance" [
-      set pcolor green]
-    ent = "StandardShelf" [
-      set pcolor pink]
-    ent = "SlantedShelf" [
-      set pcolor blue]
-   ent = "Refridgerator" [
-      set pcolor yellow]
-   ent = "Checkout" [
-      set pcolor yellow]
-   ent = "CircularStand" [
-      set pcolor grey]
-    [set pcolor red])
-  ]
-
-
-
-
-
+  ask turtle 1 [set color red]
+  set %infected (count turtles with [color = red] / count turtles) * 100
 end
 
-
-to setup-patches
-  ask patches [
-   set grass-amount random-float 10.0
-   color-grass
-
-  ]
+to go
+  tick
+  ask turtles
+    [rt random 100 lt random 100 fd 1]
+  ask turtles with [color = red]
+    [
+      ask other turtles-here [if random 100 < probabilityofinfection
+        [set color red]]
+    ]
+  set %infected (count turtles with [color = red] / count turtles) * 100
+  if %infected = 100 [stop]
 end
-
-
-
-to color-grass
-  set pcolor scale-color white grass-amount 10 10
-end
-
 @#$#@#$#@
 GRAPHICS-WINDOW
-350
-30
-
-774
-351
+210
+10
+647
+448
 -1
 -1
-8.0
-
+13.0
 1
 10
 1
 1
 1
 0
-
-0
-0
+1
+1
 1
 -16
-35
--28
-10
-
+16
+-16
+16
 0
 0
 1
@@ -117,13 +54,12 @@ ticks
 30.0
 
 BUTTON
-
-13
-68
-108
-101
+17
+22
+80
+55
 NIL
-set-shelves
+setup
 NIL
 1
 T
@@ -133,6 +69,93 @@ NIL
 NIL
 NIL
 1
+
+BUTTON
+95
+22
+158
+55
+NIL
+go
+T
+1
+T
+OBSERVER
+NIL
+NIL
+NIL
+NIL
+1
+
+SLIDER
+12
+70
+184
+103
+population
+population
+0
+100
+40.0
+1
+1
+NIL
+HORIZONTAL
+
+SLIDER
+14
+120
+186
+153
+probabilityofinfection
+probabilityofinfection
+0
+100
+30.0
+1
+1
+NIL
+HORIZONTAL
+
+PLOT
+5
+236
+205
+386
+virus spread
+days
+percent infected
+0.0
+10.0
+0.0
+10.0
+true
+false
+"" ""
+PENS
+"default" 1.0 0 -16777216 true "" "plot %infected"
+
+MONITOR
+18
+408
+89
+453
+%infected
+%infected
+17
+1
+11
+
+MONITOR
+109
+408
+166
+453
+days
+ticks
+17
+1
+11
 
 @#$#@#$#@
 ## WHAT IS IT?

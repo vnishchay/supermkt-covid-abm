@@ -1,115 +1,58 @@
-globals [fileList]
+extensions [csv]
+;globals [input]
 
-patches-own [ grass-amount ]
-
-to set-shelves
-
+to setup
   ca
-  file-open "example_data/shelves.csv"
-  setup-patches
-    ask patches[
-    if pxcor = 32 and pycor = -25 [set pcolor yellow ]
-
-    if  (pxcor >= -14 and pxcor <= 33 ) and pycor = -26 [set pcolor grey ]
-    if  (pxcor >= 14 and pxcor <= 33 ) and pycor = -5 [set pcolor grey ]
-    if  (pxcor >= -13 and pxcor <= 13 ) and pycor = -14 [set pcolor grey ]
-
-
-    if  (pycor >= -26 and pycor <= -14) and pxcor = -14 [set pcolor grey ]
-    if  (pycor >= -26 and pycor <= -6) and pxcor = 33 [set pcolor grey ]
-    if  (pycor >= -14 and pycor <= -6) and pxcor = 14 [set pcolor grey ]
-
+;  let lines (csv:from-file "E:/5THSEM/AgentBasedModelingandSimulation/ProjectEfforts/NR-ABM-population/tests/test_data/agents_out.txt" " ")
+;  foreach lines [ line ->
+;    let col1 (item 0 line)
+;    let i 1
+;    while [item i line = " "] [ set i (i + 1)]
+;    let col2 (item i line)
+;    show col2
+;    set i (i + 1)
+;    while [item i line = ""] [ set i (i + 1)]
+;    let col3 (item i line)
+;    show col3
+;    set input lput col1 input
+;  ]
+  let lines (csv:from-file "E:/5THSEM/AgentBasedModelingandSimulation/ProjectEfforts/NR-ABM-population/tests/test_data/hospitals_output.txt" " ")
+  foreach lines [ line ->
+    show line
   ]
-  while [not file-at-end?][
-    shelf
-  ]
-
-  file-close-all
-  reset-ticks
+  ;show lines
 end
 
-to shelf
-  let csv file-read-line
-  set csv word csv ","
-  let mylist []
-  while [not empty? csv]
-  [
-    let $sep position "," csv
-    let $item substring csv 0 $sep
-    carefully [set $item read-from-string $item][]
-    set mylist lput $item mylist
-    set csv substring csv ($sep + 1) length csv
-  ]
-
-  show mylist
-  let x item 0 mylist * 1.75
-  let y item 1 mylist * 1.75
-    ask patch x ( y - 20 ) [
-
-  let ent item 6 mylist
-    (ifelse
-    ent = "Entrance" [
-      set pcolor green]
-    ent = "StandardShelf" [
-      set pcolor pink]
-    ent = "SlantedShelf" [
-      set pcolor blue]
-   ent = "Refridgerator" [
-      set pcolor yellow]
-   ent = "Checkout" [
-      set pcolor yellow]
-   ent = "CircularStand" [
-      set pcolor grey]
-    [set pcolor red])
-  ]
-
-
-
-
-
-end
-
-
-to setup-patches
-  ask patches [
-   set grass-amount random-float 10.0
-   color-grass
-
+to hospi
+  let lines (csv:from-file "E:/5THSEM/AgentBasedModelingandSimulation/ProjectEfforts/NR-ABM-population/tests/test_data/hospitals_output.txt" " ")
+  foreach lines [ line ->
+    foreach line [ a ->
+      show a
+    ]
   ]
 end
-
-
-
-to color-grass
-  set pcolor scale-color white grass-amount 10 10
-end
-
 @#$#@#$#@
 GRAPHICS-WINDOW
-350
-30
-
-774
-351
+210
+10
+647
+448
 -1
 -1
-8.0
-
+13.0
 1
 10
 1
 1
 1
 0
-
-0
-0
+1
+1
 1
 -16
-35
--28
-10
-
+16
+-16
+16
 0
 0
 1
@@ -117,13 +60,29 @@ ticks
 30.0
 
 BUTTON
-
-13
-68
-108
-101
+34
+15
+97
+48
 NIL
-set-shelves
+setup
+NIL
+1
+T
+OBSERVER
+NIL
+NIL
+NIL
+NIL
+1
+
+BUTTON
+121
+14
+186
+47
+NIL
+hospi
 NIL
 1
 T

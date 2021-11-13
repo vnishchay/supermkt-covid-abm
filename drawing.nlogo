@@ -1,115 +1,89 @@
-globals [fileList]
+patches-own [ is-special? ]
 
-patches-own [ grass-amount ]
-
-to set-shelves
-
+to setup-show
   ca
-  file-open "example_data/shelves.csv"
-  setup-patches
-    ask patches[
-    if pxcor = 32 and pycor = -25 [set pcolor yellow ]
-
-    if  (pxcor >= -14 and pxcor <= 33 ) and pycor = -26 [set pcolor grey ]
-    if  (pxcor >= 14 and pxcor <= 33 ) and pycor = -5 [set pcolor grey ]
-    if  (pxcor >= -13 and pxcor <= 13 ) and pycor = -14 [set pcolor grey ]
-
-
-    if  (pycor >= -26 and pycor <= -14) and pxcor = -14 [set pcolor grey ]
-    if  (pycor >= -26 and pycor <= -6) and pxcor = 33 [set pcolor grey ]
-    if  (pycor >= -14 and pycor <= -6) and pxcor = 14 [set pcolor grey ]
-
-  ]
-  while [not file-at-end?][
-    shelf
-  ]
-
-  file-close-all
-  reset-ticks
 end
 
-to shelf
-  let csv file-read-line
-  set csv word csv ","
-  let mylist []
-  while [not empty? csv]
-  [
-    let $sep position "," csv
-    let $item substring csv 0 $sep
-    carefully [set $item read-from-string $item][]
-    set mylist lput $item mylist
-    set csv substring csv ($sep + 1) length csv
-  ]
-
-  show mylist
-  let x item 0 mylist * 1.75
-  let y item 1 mylist * 1.75
-    ask patch x ( y - 20 ) [
-
-  let ent item 6 mylist
-    (ifelse
-    ent = "Entrance" [
-      set pcolor green]
-    ent = "StandardShelf" [
-      set pcolor pink]
-    ent = "SlantedShelf" [
-      set pcolor blue]
-   ent = "Refridgerator" [
-      set pcolor yellow]
-   ent = "Checkout" [
-      set pcolor yellow]
-   ent = "CircularStand" [
-      set pcolor grey]
-    [set pcolor red])
-  ]
-
-
-
-
-
+to go-show
+  ask patch 5 7 [set plabel (word "mouse-xcor: " mouse-xcor)]
+  ask patch 5 6 [set plabel (word "mouse-ycor: " mouse-ycor)]
+  ask patch 5 5 [set plabel (word "mouse-inside?: " mouse-inside?)]
+  ask patch 5 4 [set plabel (word "mouse-down: " mouse-down?)]
 end
 
-
-to setup-patches
-  ask patches [
-   set grass-amount random-float 10.0
-   color-grass
-
+to draw-patch-border
+  sprout 1[
+    set color gray
+    set heading 0
+    fd .5
+    rt 90
+    pd repeat 4 [fd .5 rt 90 fd .5]
+    die
   ]
 end
 
+to setup
+  ca
+  crt 1 [
+    set shape "circle 2 modified"
+    set color white
+    set size .6
+  ]
+  ask patches [set is-special? false]
 
+  ask patch -7 min-pycor [
+    set is-special? true
+    draw-patch-border
+  ]
 
-to color-grass
-  set pcolor scale-color white grass-amount 10 10
+  let x -6
+  repeat 14[
+    ask patch x min-pycor [
+      set pcolor (x + 6) * 10 + 5
+      set is-special? true
+      draw-patch-border
+    ]
+    set x x + 1
+  ]
 end
 
+to go
+  if mouse-inside? [
+    ask turtle 0[
+      setxy mouse-xcor mouse-ycor
+      if mouse-down? [
+        ifelse is-special?
+        [set color pcolor]
+        [set pcolor color]
+
+      ]
+    ]
+  ]
+end
+
+;https://www.youtube.com/watch?v=NOBPYxCpB54
 @#$#@#$#@
 GRAPHICS-WINDOW
-350
-30
-
-774
-351
+210
+10
+647
+448
 -1
 -1
-8.0
-
+13.0
 1
 10
 1
 1
 1
 0
-
-0
-0
+1
+1
 1
 -16
-35
--28
-10
-
+16
+-16
+16
 0
 0
 1
@@ -117,14 +91,64 @@ ticks
 30.0
 
 BUTTON
+29
+47
+125
+80
+NIL
+setup-show
+NIL
+1
+T
+OBSERVER
+NIL
+NIL
+NIL
+NIL
+1
 
-13
-68
-108
-101
+BUTTON
+33
+106
+112
+139
 NIL
-set-shelves
+go-show
+T
+1
+T
+OBSERVER
 NIL
+NIL
+NIL
+NIL
+1
+
+BUTTON
+24
+196
+160
+229
+NIL
+setup
+NIL
+1
+T
+OBSERVER
+NIL
+NIL
+NIL
+NIL
+1
+
+BUTTON
+50
+270
+113
+303
+NIL
+go
+T
 1
 T
 OBSERVER
