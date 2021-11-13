@@ -1,45 +1,29 @@
 globals [fileList]
 
-to setup
-  ca
-  file-open "example_data/zones.csv"
-  ;E:/5THSEM/AgentBasedModelingandSimulation/ProjectEfforts/
-  while [not file-at-end?][
-    set-zone
-  ]
-  file-close-all
-  reset-ticks
-end
-
-to set-zone
-  let csv file-read-line
-  set csv word csv ","
-  let mylist []
-  while [not empty? csv]
-  [
-    let $sep position "," csv
-    let $item substring csv 0 $sep
-    carefully [set $item read-from-string $item][]
-    set mylist lput $item mylist
-    set csv substring csv ($sep + 1) length csv
-  ]
-  show mylist
-  let x0 item 1 mylist * 2
-  let x1 item 2 mylist * 2
-  let y0 item 3 mylist * 2
-  let y1 item 4 mylist * 2
-  show y1
-  ask patch x0 y0  [set pcolor red]
-  ask patch x1 y1 [set pcolor red]
-end
+patches-own [ grass-amount ]
 
 to set-shelves
+
   ca
   file-open "example_data/shelves.csv"
-;  E:/5THSEM/AgentBasedModelingandSimulation/ProjectEfforts/
+  setup-patches
+    ask patches[
+    if pxcor = 32 and pycor = -25 [set pcolor yellow ]
+
+    if  (pxcor >= -14 and pxcor <= 33 ) and pycor = -26 [set pcolor grey ]
+    if  (pxcor >= 14 and pxcor <= 33 ) and pycor = -5 [set pcolor grey ]
+    if  (pxcor >= -13 and pxcor <= 13 ) and pycor = -14 [set pcolor grey ]
+
+
+    if  (pycor >= -26 and pycor <= -14) and pxcor = -14 [set pcolor grey ]
+    if  (pycor >= -26 and pycor <= -6) and pxcor = 33 [set pcolor grey ]
+    if  (pycor >= -14 and pycor <= -6) and pxcor = 14 [set pcolor grey ]
+
+  ]
   while [not file-at-end?][
     shelf
   ]
+
   file-close-all
   reset-ticks
 end
@@ -56,10 +40,12 @@ to shelf
     set mylist lput $item mylist
     set csv substring csv ($sep + 1) length csv
   ]
+
   show mylist
-  let x item 0 mylist * 2
-  let y item 1 mylist * 2
-    ask patch x y [
+  let x item 0 mylist * 1.75
+  let y item 1 mylist * 1.75
+    ask patch x ( y - 20 ) [
+
   let ent item 6 mylist
     (ifelse
     ent = "Entrance" [
@@ -71,36 +57,59 @@ to shelf
    ent = "Refridgerator" [
       set pcolor yellow]
    ent = "Checkout" [
-      set pcolor red]
+      set pcolor yellow]
    ent = "CircularStand" [
       set pcolor grey]
-    [set pcolor white])
+    [set pcolor red])
+  ]
+
+
+
+
+
+end
+
+
+to setup-patches
+  ask patches [
+   set grass-amount random-float 10.0
+   color-grass
+
   ]
 end
 
+
+
+to color-grass
+  set pcolor scale-color white grass-amount 10 10
+end
 
 @#$#@#$#@
 GRAPHICS-WINDOW
 350
 30
-883
-564
+
+774
+351
 -1
 -1
-5.2
+8.0
+
 1
 10
 1
 1
 1
 0
+
+0
+0
 1
-1
-1
--50
-50
--50
-50
+-16
+35
+-28
+10
+
 0
 0
 1
@@ -108,23 +117,7 @@ ticks
 30.0
 
 BUTTON
-14
-16
-77
-49
-NIL
-setup
-NIL
-1
-T
-OBSERVER
-NIL
-NIL
-NIL
-NIL
-1
 
-BUTTON
 13
 68
 108
