@@ -42,9 +42,9 @@ The customers randomly shop inside the shopping store going from shop to shop.
 
 We represent a store as a network (called a store graph), in which nodes represent zones and edges connect contiguous zones. We create a store graph from a synthetic store layout following a similar procedure. Zones are approximately 2m by 2m and we specify a number of entrance, till, and exit nodes. We choose a network representation of a store for ease of simulation, as it significantly reduces the complexity of the model.
 
-![abms2.png](https://s3-us-west-2.amazonaws.com/secure.notion-static.com/fade86a3-9c37-4d76-b29c-648af86039f1/abms2.png)
+![abms2.png](abms2.png)
 
-![Untitled](https://s3-us-west-2.amazonaws.com/secure.notion-static.com/20b23273-469c-4b64-a056-317aba202d67/Untitled.png)
+![Untitled](Untitled.png)
 
 The coordinates of the store map are imported from " shelves.csv " file.
 We added some border , entry and exit area with different colors so it is easy to simulate the customer movement and virus transmission.
