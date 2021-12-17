@@ -1,11 +1,9 @@
-# ABMS PROJECT 
+# AGENT BASED MODELING SIMULATION 
 ### RESEARCH PAPER PROPOSAL: [Modelling COVID-19 transmission in supermarkets using an agent-based model](https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0249821)
 
 ---
 
-Group Number :  22 
-
-GROUP MEMBERS  
+### MEMBERS  
 
 - Dishant Tayade             S20190010175
 - Hardik Sharma              S20190010062
@@ -148,10 +146,10 @@ If a customer is infected and if a non infected customer comes in contact ( cert
 
 Masks can be implemented to stop/ decrease the spread of virus as masks will avoid direct contact to virus resulting in decreasing the spread of virus.  
 
-# INPUT DATA
+## INPUT DATA
 
 We are using synthetically created store layout and shopping path. The store is a small store with around 80 shelves, 4 tiles and 3 entrances and 1 exit. which we are taking from "shelves.csv" file. Other inputs such as Customer customer/min , transmission rate, percentage of infected customers, radius of infection/exposure etc. are taken using sliders. .
 
-# INITIALIZATION
+## INITIALIZATION
 
 In the initial state of the model world, we use a synthetically-created store layout. The store is small and has around 80 shelves, 4 tills, 2 entrances and one exit. There are not any customers in supermarket. Customers are eighter susceptible of infectious when they enter the store and the customers initially are infected by  a probability of "percentage-of-infected". Customer customer/min is defined, which is the number of customer entering the store per minute. "percentage-of-infected-customers" is defined, which is the percentage infected initially. Opening time of store is defined and virus  transmission rate is defined. Option to turn on masks and turn off masks can be done.
