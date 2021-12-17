@@ -1,5 +1,4 @@
-##ABMS PROJECT 
-##RESEARCH PAPER PROPOSAL: [Modelling COVID-19 transmission in supermarkets using an agent-based model](https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0249821)
+##ABMS PROJECT RESEARCH PAPER PROPOSAL: [Modelling COVID-19 transmission in supermarkets using an agent-based model](https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0249821)
 
 ---
 
